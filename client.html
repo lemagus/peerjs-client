@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr" >
+  <head>
+    <meta charset="utf-8">
+    <title>WebRTC</title>
+	
+	<script src="http://cdn.peerjs.com/0.3/peer.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	
+  </head>
+  <body>
+
+  	<video id="preview" width="360" height="240"  ></video>
+  	
+  	<form>
+	  	<input type="text" name="username" />
+	  	<button>Call</button>
+  	</form>
+
+   	<script>
+		
+		var peer = new Peer('lemasquedepizzorro', {host: '10.200.10.106', port: 9000, path: '/'});
+		
+		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+		
+		navigator.getUserMedia({audio: true, video: true}, function(stream){
+        	//$('#preview').prop('src', URL.createObjectURL(stream));
+			
+			window.localStream = stream;
+			
+      	}, function(e){
+	      	console.log(e);
+      	});
+      	
+      	$('form').submit(function(){
+	      	var username = $(this).find('input[name=username]').val();
+	      	var call = peer.call(username, window.localStream);
+	      	
+	      	return false;
+      	})
+		
+  	</script>
+  </body>
+</html>
